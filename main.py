@@ -1,2 +1,2 @@
 import toml
-print(toml.load(open('pyproject.toml'))['tool']['setuptools']['version'])
+print(f"Running Daily Maintenance v{toml.load(open('pyproject.toml'))['tool']['setuptools']['version']}")
