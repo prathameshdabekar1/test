@@ -52,7 +52,7 @@ if github_version != local_version:
 
 else:
     print(f"Running Daily Maintenance v{local_version}")
-    gis = GIS("https://caw.spatialitics.net/portal", "portaladmin", "Ui592Wzi")
+    gis = GIS("https://arcadianinfra.spatialitics.net/portal", "portaladmin", "Cssl2021")
     display_platform_info(gis)
     display_servers_info(gis)
 
