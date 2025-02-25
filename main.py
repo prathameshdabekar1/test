@@ -46,11 +46,13 @@ if github_version != local_version:
     print("Local repository updated and version.toml synced.")
     local_version = toml.load(open('version.toml'))['tool']['setuptools']['version']
     print(f"Running Daily Maintenance v{local_version}")
-    gis = GIS("https://caw.spatialitics.net/portal", "portaladmin", "Ui592Wzi")
+    os.remove('pyproject.toml')
+    gis = GIS("https://arcadianinfra.spatialitics.net/portal", "portaladmin", "Cssl2021")
     display_platform_info(gis)
     display_servers_info(gis)
 
 else:
+    os.remove('pyproject.toml')
     print(f"Running Daily Maintenance v{local_version}")
     gis = GIS("https://arcadianinfra.spatialitics.net/portal", "portaladmin", "Cssl2021")
     display_platform_info(gis)
