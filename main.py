@@ -1,5 +1,6 @@
 import requests
 import toml
+import os
 import subprocess
 import shutil
 from arcgis.gis import GIS
@@ -45,12 +46,14 @@ if github_version != local_version:
     
     print("Local repository updated and version.toml synced.")
     local_version = toml.load(open('version.toml'))['tool']['setuptools']['version']
+    os.remove('pyproject.toml')
     print(f"Running Daily Maintenance v{local_version}")
     gis = GIS("https://caw.spatialitics.net/portal", "portaladmin", "Ui592Wzi")
     display_platform_info(gis)
     display_servers_info(gis)
 
 else:
+    os.remove('pyproject.toml')
     print(f"Running Daily Maintenance v{local_version}")
     gis = GIS("https://caw.spatialitics.net/portal", "portaladmin", "Ui592Wzi")
     display_platform_info(gis)
