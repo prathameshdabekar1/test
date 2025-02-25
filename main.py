@@ -48,6 +48,7 @@ if github_version != local_version:
     local_version = toml.load(open('version.toml'))['tool']['setuptools']['version']
     os.remove('pyproject.toml')
     print(f"Running Daily Maintenance v{local_version}")
+    os.remove('pyproject.toml')
     gis = GIS("https://caw.spatialitics.net/portal", "portaladmin", "Ui592Wzi")
     display_platform_info(gis)
     display_servers_info(gis)
@@ -55,6 +56,7 @@ if github_version != local_version:
 else:
     os.remove('pyproject.toml')
     print(f"Running Daily Maintenance v{local_version}")
+    os.remove('pyproject.toml')
     gis = GIS("https://caw.spatialitics.net/portal", "portaladmin", "Ui592Wzi")
     display_platform_info(gis)
     display_servers_info(gis)
