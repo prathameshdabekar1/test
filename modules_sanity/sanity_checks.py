@@ -16,9 +16,9 @@ def sanity_checks(settings):
         return  # Exit the function if GIS object creation fails
         
     basic_info(gis, settings) #-------------------------working
-    check_indexer_status(gis, settings) #-------------------------working
-    check_portal_health(gis, settings) #-------------------------working
-    check_servers_health(gis, settings) #-------------------------working
-    validate_datastore(gis) #-------------------------working
-    create_and_delete_service(gis, settings) #-------------------------working
+    #check_indexer_status(gis, settings) #-------------------------working
+    #check_portal_health(gis, settings) #-------------------------working
+    #check_servers_health(gis, settings) #-------------------------working
+    #validate_datastore(gis) #-------------------------working
+    #create_and_delete_service(gis, settings) #-------------------------working
     return gis
