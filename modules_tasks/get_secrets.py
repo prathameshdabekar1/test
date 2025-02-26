@@ -1,7 +1,3 @@
-import gevent.monkey
-gevent.monkey.patch_all()
-
-import boto3
 import json
 import base64
 from dynaconf import Dynaconf

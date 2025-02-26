@@ -3,7 +3,7 @@ import toml
 import os
 import subprocess
 import shutil
-from arcgis.gis import GIS
+import logging
 from modules_tasks.setup_logging import setup_logging
 from modules_tasks.get_secrets import get_secrets
 from modules_sanity.sanity_checks import sanity_checks
@@ -20,12 +20,13 @@ with open('pyproject.toml', 'w') as f:
 # Load versions from both files
 github_version = toml.load(open('pyproject.toml'))['tool']['setuptools']['version']
 local_version = toml.load(open('version.toml'))['tool']['setuptools']['version']
+setup_logging()
 
-print(f"Project version on Github: v{github_version}")
+logging.info(f"Project version on Github: v{github_version}")
 
 # Check if versions match
 if github_version != local_version:
-    print("Versions do not match. Updating local repository...")
+    logging.info("Versions do not match. Updating local repository...")
     
     # Run git pull
     subprocess.run(['git', 'pull', 'origin', 'main'])
@@ -33,16 +34,15 @@ if github_version != local_version:
     # Copy pyproject.toml to version.toml
     shutil.copy('pyproject.toml', 'version.toml')
     
-    print("Local repository updated and version.toml synced.")
+    logging.info("Local repository updated and version.toml synced.")
     local_version = toml.load(open('version.toml'))['tool']['setuptools']['version']
-    print(f"Running Daily Maintenance v{local_version}")
-    setup_logging()
+    logging.info(f"Running Daily Maintenance v{local_version}")
+    os.remove('pyproject.toml')
     settings = get_secrets()  # Retrieve credentials from key vault
     gis = sanity_checks(settings) # Perform all sanity checks in one go
 
 else:
-    print(f"Running Daily Maintenance v{local_version}")
-    setup_logging()
+    logging.info(f"Running Daily Maintenance v{local_version}")
+    os.remove('pyproject.toml')
     settings = get_secrets()  # Retrieve credentials from key vault
     gis = sanity_checks(settings) # Perform all sanity checks in one go
-
