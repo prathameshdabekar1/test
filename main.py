@@ -35,14 +35,12 @@ if github_version != local_version:
     
     print("Local repository updated and version.toml synced.")
     local_version = toml.load(open('version.toml'))['tool']['setuptools']['version']
-    os.remove('pyproject.toml')
     print(f"Running Daily Maintenance v{local_version}")
     setup_logging()
     settings = get_secrets()  # Retrieve credentials from key vault
     gis = sanity_checks(settings) # Perform all sanity checks in one go
 
 else:
-    os.remove('pyproject.toml')
     print(f"Running Daily Maintenance v{local_version}")
     setup_logging()
     settings = get_secrets()  # Retrieve credentials from key vault
