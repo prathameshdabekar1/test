@@ -4,25 +4,14 @@ import os
 import subprocess
 import shutil
 from arcgis.gis import GIS
-
-def display_platform_info(gis):
-    try:
-        print(f"Platform: {gis.properties.platform}")
-        print(f"Version: {gis.admin.properties.version}")
-        print("ArcGIS Enterprise is running on the following URLs:")
-        print(f"\thttps://{gis.properties.portalHostname}")
-    except AttributeError as e:
-        print("Error accessing GIS platform information.")
-
-def display_servers_info(gis):
-    try:
-        if "servers" in gis.admin.federation.servers:
-            for svr in gis.admin.federation.servers["servers"]:
-                print(f"\t{svr['url']}")
-        else:
-            print("No servers found in federation.")
-    except KeyError as e:
-        print("Key error when accessing servers information.")
+from modules_tasks.setup_logging import setup_logging
+from modules_tasks.get_secrets import get_secrets
+from modules_sanity.sanity_checks import sanity_checks
+from modules_export.gis_backups import gis_backups
+from modules_tasks.delete_old_files import delete_old_files
+from modules_tasks.upload_to_blob import upload_to_blob
+from modules_tasks.upload_to_s3 import upload_to_s3
+from modules_email.send_email_notification import send_email_notification
 
 # Download the latest pyproject.toml from GitHub
 with open('pyproject.toml', 'w') as f:
@@ -48,16 +37,14 @@ if github_version != local_version:
     local_version = toml.load(open('version.toml'))['tool']['setuptools']['version']
     os.remove('pyproject.toml')
     print(f"Running Daily Maintenance v{local_version}")
-    os.remove('pyproject.toml')
-    gis = GIS("https://caw.spatialitics.net/portal", "portaladmin", "Ui592Wzi")
-    display_platform_info(gis)
-    display_servers_info(gis)
+    setup_logging()
+    settings = get_secrets()  # Retrieve credentials from key vault
+    gis = sanity_checks(settings) # Perform all sanity checks in one go
 
 else:
     os.remove('pyproject.toml')
     print(f"Running Daily Maintenance v{local_version}")
-    os.remove('pyproject.toml')
-    gis = GIS("https://caw.spatialitics.net/portal", "portaladmin", "Ui592Wzi")
-    display_platform_info(gis)
-    display_servers_info(gis)
+    setup_logging()
+    settings = get_secrets()  # Retrieve credentials from key vault
+    gis = sanity_checks(settings) # Perform all sanity checks in one go
 
